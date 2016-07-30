@@ -93,7 +93,7 @@ public class WorldPanel extends JPanel
 		while (iter.hasNext())
 		{
 			Entity entity = iter.next();
-
+			
 			if ((entity != this.game.getPlayer()) || this.game.canDrawPlayer())
 			{
 				Vector pos = entity.getPosition();

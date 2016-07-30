@@ -249,43 +249,50 @@ public class Game extends JFrame
 	
 	private void resetMenu ()
 	{
+		this.removeKeyListener();
+		this.remove(this.world);
+		
+		this.entities = new LinkedList <> ();
+		this.pendingEntities = new ArrayList <> ();
+		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		this.isGameStart = false;
 		
 		this.resetEntityLists();
-		this.removeKeyListener();
-		
-		this.remove(this.world);
-		this.add(this.menu, BorderLayout.CENTER);
-		this.revalidate();
-		
 		this.addKeyListener(this.menuListener);
+		this.add(this.menu, BorderLayout.CENTER);
+		
+		this.revalidate();
 	}
 	
 	private void resetGame ()
 	{
+		this.removeKeyListener();
+		this.remove(this.menu);
+		
+		this.entities = new LinkedList <> ();
+		this.pendingEntities = new ArrayList <> ();
+		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
+		this.player = new Player ();
 		this.score = 0;
 		this.lives = 3;
 		this.deathCooldown = 0;
 		this.isGameStop = false;
 		
 		this.resetEntityLists();
-		this.removeKeyListener();
-		
-		this.remove(this.menu);
-		this.add(this.world, BorderLayout.CENTER);
-		this.revalidate();
-		
 		this.addKeyListener(this.playerListener);
+		this.add(this.world, BorderLayout.CENTER);
+		
+		//Envoyer son Entity
+		//Ajouter les Entity recu du serveur
+		for (int i = 0; i < 4 * 2; i++)
+			this.registerEntity(new SuperSpeedShip (50 + i * 50, 100, Ennemi.START_LEFT));
+		
+		this.revalidate();
 	}
 
 	private void startMenu ()
 	{
-		this.entities = new LinkedList <> ();
-		this.pendingEntities = new ArrayList <> ();
-
 		this.resetMenu();
-
-		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		
 		while (! this.isGameStart())
 		{
@@ -310,16 +317,7 @@ public class Game extends JFrame
 
 	private void startGame ()
 	{
-		this.entities = new LinkedList <> ();
-		this.pendingEntities = new ArrayList <> ();
-		this.player = new Player ();
-
 		this.resetGame();
-
-		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
-		
-		for (int i = 0; i < 4 * 2; i++)
-			this.registerEntity(new SuperSpeedShip (50 + i * 50, 100, Ennemi.START_LEFT));
 		
 		while (! this.isGameStop())
 		{
@@ -348,9 +346,9 @@ public class Game extends JFrame
 	{
 		this.entities.addAll(this.pendingEntities);
 		this.pendingEntities.clear();
-
-		if (this.restartCooldown > 0)
-			this.restartCooldown--;
+		
+		//if (this.restartCooldown > 0)
+		//	this.restartCooldown--;
 		
 		if (this.deathCooldown > 0)
 		{
@@ -369,9 +367,14 @@ public class Game extends JFrame
 			}
 		}
 		
+		//Envoyer son Entity
+		//Ajouter les Entity recu du serveur
+		
 		for (Entity entity : this.entities)
 			entity.update(this);
-
+		
+		//Peut etre faire la partie du check de la collision coté serveur
+		//Comme ca ca enleverait le check de collision et le removal et on aurait juste a update les Entity
 		for (int i = 0; i < this.entities.size(); i++)
 		{
 			Entity a = this.entities.get(i);
