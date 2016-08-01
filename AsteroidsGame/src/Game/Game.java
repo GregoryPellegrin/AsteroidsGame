@@ -38,11 +38,11 @@ public class Game extends JFrame
 	public Story story;
 	
 	private static final int FRAMES_PER_SECOND = 60;
-	private static final long FRAME_TIME = (long) (1000000000.0 / FRAMES_PER_SECOND);
 	private static final int DEATH_COOLDOWN_LIMIT = 200;
 	private static final int RESPAWN_COOLDOWN_LIMIT = 100;
 	private static final int INVULN_COOLDOWN_LIMIT = 0;
 	private static final int RESET_COOLDOWN_LIMIT = 120;
+	private static final long FRAME_TIME = (long) (1000000000.0 / FRAMES_PER_SECOND);
 	
 	private final MenuPanel menu;
 	private final WorldPanel world;
@@ -390,7 +390,7 @@ public class Game extends JFrame
 				}
 			}
 		}
-
+		
 		Iterator <Entity> iter = this.entities.iterator();
 		while (iter.hasNext())
 			if (iter.next().needsRemoval())

@@ -10,8 +10,9 @@ import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Player extends Ship
+public class Player extends Ship implements Serializable
 {
 	private static final double SPEED_SHIP = 0.0385;
 	private static final double SUPER_SPEED_SHIP = 0.2385;
@@ -51,7 +52,7 @@ public class Player extends Ship
 			this.setSpeedMissile(Player.SPEED_MISSILE);
 		}
 	}
-
+	
 	@Override
 	public void reset ()
 	{
@@ -60,7 +61,7 @@ public class Player extends Ship
 		super.position.set(WorldPanel.W_MAP_PIXEL / 2.0, WorldPanel.H_MAP_PIXEL - 50);
 		super.speed.set(0.0, 0.0);
 	}
-
+	
 	@Override
 	public void checkCollision (Game game, Entity other)
 	{

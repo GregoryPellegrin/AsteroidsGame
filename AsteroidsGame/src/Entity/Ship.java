@@ -9,11 +9,12 @@ import Game.Game;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Ship extends Entity
+public class Ship extends Entity implements Serializable
 {
 	protected List <Color> flamesMotorColor;
 	

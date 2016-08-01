@@ -10,8 +10,9 @@ import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Missile extends Entity
+public class Missile extends Entity implements Serializable
 {
 	private static final int LIFESPAN_MAX = 60;
 	

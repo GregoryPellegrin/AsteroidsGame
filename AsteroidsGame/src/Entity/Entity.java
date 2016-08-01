@@ -10,8 +10,9 @@ import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public abstract class Entity
+public abstract class Entity implements Serializable
 {
 	protected Vector position;
 	protected Vector speed;
@@ -19,11 +20,18 @@ public abstract class Entity
 	protected double rotation;
 	protected double collisionRadius;
 	
+	private static int totalClient = 0;
+	
+	private final int idClient;
 	private final int killScore;
+	
 	private boolean needsRemoval;
 
 	public Entity (Vector position, Vector speed, Color color, double radius, int killScore)
 	{
+		Entity.totalClient = Entity.totalClient + 1;
+		this.idClient = Entity.totalClient;
+		
 		this.position = position;
 		this.speed = speed;
 		this.color = color;
@@ -32,7 +40,7 @@ public abstract class Entity
 		this.killScore = killScore;
 		this.needsRemoval = false;
 	}
-
+	
 	public Vector getPosition ()
 	{
 		return this.position;
@@ -51,6 +59,11 @@ public abstract class Entity
 	public double getCollisionRadius ()
 	{
 		return this.collisionRadius;
+	}
+	
+	public int getIdClient ()
+	{
+		return this.idClient;
 	}
 	
 	public int getKillScore ()

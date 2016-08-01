@@ -11,8 +11,9 @@ import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class BasicShip extends Ennemi
+public class BasicShip extends Ennemi implements Serializable
 {
 	private static final double SPEED_SHIP = 0.0285;
 	private static final double SPEED_MISSILE = 6.75;

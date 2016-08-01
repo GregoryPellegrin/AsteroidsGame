@@ -9,8 +9,9 @@ import Game.Game;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Ennemi extends Ship
+public class Ennemi extends Ship implements Serializable
 {
 	public final static int START_RIGHT = 300;
 	public final static int START_LEFT = -300;
