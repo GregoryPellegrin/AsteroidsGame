@@ -131,10 +131,6 @@ public class WorldPanel extends JPanel
 			this.starBackground.get(i).drawStar(g2d);
 		}
 		
-		g2d.setFont(this.largeFont);
-		g2d.setColor(Color.BLUE);
-		g2d.drawString(this.game.getLives() + "UP", W_MAP_PIXEL - g.getFontMetrics().stringWidth("3 UP") - 10, 25);
-		
 		g2d.setColor(WorldPanel.COLOR_DEFAULT);
 	}
 }

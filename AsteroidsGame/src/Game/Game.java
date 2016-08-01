@@ -38,10 +38,6 @@ public class Game extends JFrame
 	public Story story;
 	
 	private static final int FRAMES_PER_SECOND = 60;
-	private static final int DEATH_COOLDOWN_LIMIT = 200;
-	private static final int RESPAWN_COOLDOWN_LIMIT = 100;
-	private static final int INVULN_COOLDOWN_LIMIT = 0;
-	private static final int RESET_COOLDOWN_LIMIT = 120;
 	private static final long FRAME_TIME = (long) (1000000000.0 / FRAMES_PER_SECOND);
 	
 	private final MenuPanel menu;
@@ -55,11 +51,7 @@ public class Game extends JFrame
 	private Player player;
 	private boolean isGameStart;
 	private boolean isGameStop;
-	private int deathCooldown;
-	private int restartCooldown;
-	private int score;
-	private int lives;
-
+	
 	private Game ()
 	{
 		super ("Asteroids");
@@ -117,7 +109,7 @@ public class Game extends JFrame
 						break;
 				}
 			}
-
+			
 			@Override
 			public void keyReleased (KeyEvent e)
 			{
@@ -169,51 +161,21 @@ public class Game extends JFrame
 		return this.player;
 	}
 
-	public boolean isPlayerInvulnerable ()
-	{
-		return (this.deathCooldown > Game.INVULN_COOLDOWN_LIMIT);
-	}
-
 	public boolean canDrawPlayer ()
 	{
-		return (this.deathCooldown <= Game.RESPAWN_COOLDOWN_LIMIT);
+		return this.player.canDrawPlayer();
 	}
 
 	public int getScore ()
 	{
-		return this.score;
-	}
-
-	public int getLives ()
-	{
-		return this.lives;
+		return this.player.getScore();
 	}
 
 	public void registerEntity (Entity entity)
 	{
 		this.pendingEntities.add(entity);
 	}
-
-	public void addScore (int score)
-	{
-		this.score = this.score + score;
-	}
 	
-	public void killPlayer ()
-	{
-		this.lives--;
-
-		if (this.lives == 0)
-		{
-			this.restartCooldown = Game.RESET_COOLDOWN_LIMIT;
-			this.deathCooldown = Integer.MAX_VALUE;
-		}
-		else
-			this.deathCooldown = Game.DEATH_COOLDOWN_LIMIT;
-
-		this.player.setFiringEnabled(false);
-	}
-
 	private boolean isGameStart ()
 	{
 		return isGameStart;
@@ -273,9 +235,6 @@ public class Game extends JFrame
 		this.pendingEntities = new ArrayList <> ();
 		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		this.player = new Player ();
-		this.score = 0;
-		this.lives = 3;
-		this.deathCooldown = 0;
 		this.isGameStop = false;
 		
 		this.resetEntityLists();
@@ -347,22 +306,18 @@ public class Game extends JFrame
 		this.entities.addAll(this.pendingEntities);
 		this.pendingEntities.clear();
 		
-		//if (this.restartCooldown > 0)
-		//	this.restartCooldown--;
-		
-		if (this.deathCooldown > 0)
+		if (this.getPlayer().deathCooldown > 0)
 		{
-			this.deathCooldown--;
+			this.getPlayer().deathCooldown = this.getPlayer().deathCooldown - 1;
 			
-			switch (this.deathCooldown)
+			switch (this.getPlayer().deathCooldown)
 			{
-				case Game.RESPAWN_COOLDOWN_LIMIT:
-					this.player.reset();
-					this.player.setFiringEnabled(false);
+				case Player.RESPAWN_COOLDOWN_LIMIT:
+					this.getPlayer().reset();
 					break;
 				
-				case Game.INVULN_COOLDOWN_LIMIT:
-					this.player.setFiringEnabled(true);
+				case Player.INVULNERABLE_COOLDOWN_LIMIT:
+					this.getPlayer().setFiringEnabled(true);
 					break;
 			}
 		}
@@ -383,7 +338,7 @@ public class Game extends JFrame
 			{
 				Entity b = this.entities.get(j);
 
-				if (i != j && a.checkCollision(b) && ((a != this.player && b != this.player) || this.deathCooldown <= Game.INVULN_COOLDOWN_LIMIT))
+				if (((i != j) && a.checkCollision(b)) && (((a != this.getPlayer()) && (b != this.getPlayer())) || (! this.getPlayer().isPlayerInvulnerable())))
 				{
 					a.checkCollision(this, b);
 					b.checkCollision(this, a);

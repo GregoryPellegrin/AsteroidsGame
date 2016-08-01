@@ -41,10 +41,10 @@ public class Ship extends Entity implements Serializable
 	private int fireCooldown;
 	private int overheatCooldown;
 	private int animationFrame;
-
-	public Ship (Vector position, Vector velocity, Color shipColor, Color missileColor, double speedShip, double speedMissile, double radius, double speedRotation, int missileMax, int fireRate, int rechargeCooldown, int killScore)
+	
+	public Ship (Vector position, Vector velocity, Color shipColor, Color missileColor, double speedShip, double speedMissile, double radius, double speedRotation, int missileMax, int fireRate, int rechargeCooldown, int life, int killScore)
 	{
-		super(position, velocity, shipColor, radius, killScore);
+		super(position, velocity, shipColor, radius, life, killScore);
 		
 		this.MISSILE_COLOR = missileColor;
 		this.MISSILE_MAX = missileMax;
@@ -123,7 +123,7 @@ public class Ship extends Entity implements Serializable
 	{
 		super.update(game);
 
-		this.animationFrame++;
+		this.animationFrame = this.animationFrame + 1;
 		
 		if (this.rotationLeftPressed != this.rotationRightPressed)
 			super.rotate(this.rotationLeftPressed ? - this.SPEED_ROTATION : this.SPEED_ROTATION);
@@ -148,8 +148,8 @@ public class Ship extends Entity implements Serializable
 				iter.remove();
 		}
 		
-		this.fireCooldown--;
-		this.overheatCooldown--;
+		this.fireCooldown = this.fireCooldown- 1;
+		this.overheatCooldown = this.overheatCooldown - 1;
 		if (this.firingEnabled && this.firePressed && (this.fireCooldown <= 0) && (this.overheatCooldown <= 0))
 		{
 			if (this.missile.size() < this.MISSILE_MAX)
@@ -162,7 +162,7 @@ public class Ship extends Entity implements Serializable
 				game.registerEntity(bullet);
 			}
 			
-			this.consecutiveShots++;
+			this.consecutiveShots = this.consecutiveShots + 1;
 			if (this.consecutiveShots == Ship.CONSECUTIVE_SHOTS_MAX)
 			{
 				this.consecutiveShots = 0;
@@ -172,7 +172,7 @@ public class Ship extends Entity implements Serializable
 		else
 		{
 			if (this.consecutiveShots > 0)
-				this.consecutiveShots--;
+				this.consecutiveShots = this.consecutiveShots - 1;
 		}
 	}
 

@@ -19,24 +19,28 @@ public abstract class Entity implements Serializable
 	protected Color color;
 	protected double rotation;
 	protected double collisionRadius;
+	protected int life;
 	
-	private static int totalClient = 0;
+	private static int total = 0;
 	
-	private final int idClient;
+	private final int id;
+	private final int lives;
 	private final int killScore;
 	
 	private boolean needsRemoval;
-
-	public Entity (Vector position, Vector speed, Color color, double radius, int killScore)
+	
+	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int killScore)
 	{
-		Entity.totalClient = Entity.totalClient + 1;
-		this.idClient = Entity.totalClient;
+		Entity.total = Entity.total + 1;
+		this.id = Entity.total;
 		
 		this.position = position;
 		this.speed = speed;
 		this.color = color;
 		this.collisionRadius = radius;
 		this.rotation = 0.0f;
+		this.lives = lives;
+		this.life = this.lives;
 		this.killScore = killScore;
 		this.needsRemoval = false;
 	}
@@ -61,9 +65,9 @@ public abstract class Entity implements Serializable
 		return this.collisionRadius;
 	}
 	
-	public int getIdClient ()
+	public int getId ()
 	{
-		return this.idClient;
+		return this.id;
 	}
 	
 	public int getKillScore ()
@@ -74,6 +78,11 @@ public abstract class Entity implements Serializable
 	public void flagForRemoval ()
 	{
 		this.needsRemoval = true;
+	}
+	
+	public void resetLife ()
+	{
+		this.life = this.lives;
 	}
 	
 	public void rotate (double amount)

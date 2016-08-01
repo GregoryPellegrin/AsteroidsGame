@@ -27,7 +27,7 @@ public class Clock
 	{
 		if (this.elapsedCycles > 0)
 		{
-			this.elapsedCycles--;
+			this.elapsedCycles = this.elapsedCycles - 1;
 			
 			return true;
 		}

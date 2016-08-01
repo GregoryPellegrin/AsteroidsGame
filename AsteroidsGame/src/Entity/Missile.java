@@ -20,7 +20,7 @@ public class Missile extends Entity implements Serializable
 
 	public Missile (Entity owner, Color color, double direction, double speed)
 	{
-		super(new Vector(owner.getPosition()), new Vector(direction).scale(speed), color, 2.0, 0);
+		super(new Vector(owner.getPosition()), new Vector(direction).scale(speed), color, 2.0, 1, 0);
 		
 		this.lifeSpan = LIFESPAN_MAX;
 	}
@@ -30,7 +30,7 @@ public class Missile extends Entity implements Serializable
 	{
 		super.update(game);
 
-		this.lifeSpan--;
+		this.lifeSpan = this.lifeSpan - 1;
 		
 		if (lifeSpan <= 0)
 			flagForRemoval();
