@@ -74,8 +74,8 @@ public class WorldPanel extends JPanel
 		
 		if (rotation != 0.0f)
 			g2d.rotate(entity.getRotation());
-			
-		entity.draw(g2d, this.game);
+		
+		entity.draw(g2d);
 	}
 
 	@Override

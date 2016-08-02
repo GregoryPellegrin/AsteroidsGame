@@ -32,7 +32,7 @@ public class BasicShip extends Ennemi implements Serializable
 	}
 	
 	@Override
-	public void draw (Graphics2D g, Game game)
+	public void draw (Graphics2D g)
 	{
 		g.setColor(super.color);
 		g.drawLine(-10, -8, 10, 0);

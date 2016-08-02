@@ -50,5 +50,5 @@ public class Ennemi extends Ship implements Serializable
 	}
 	
 	@Override
-	public void draw (Graphics2D g, Game game) {}
+	public void draw (Graphics2D g) {}
 }

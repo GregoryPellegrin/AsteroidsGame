@@ -25,11 +25,10 @@ public abstract class Entity implements Serializable
 	
 	private final int id;
 	private final int lives;
-	private final int killScore;
 	
 	private boolean needsRemoval;
 	
-	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int killScore)
+	public Entity (Vector position, Vector speed, Color color, double radius, int lives)
 	{
 		Entity.total = Entity.total + 1;
 		this.id = Entity.total;
@@ -41,7 +40,6 @@ public abstract class Entity implements Serializable
 		this.rotation = 0.0f;
 		this.lives = lives;
 		this.life = this.lives;
-		this.killScore = killScore;
 		this.needsRemoval = false;
 	}
 	
@@ -70,11 +68,6 @@ public abstract class Entity implements Serializable
 		return this.id;
 	}
 	
-	public int getKillScore ()
-	{
-		return this.killScore;
-	}
-
 	public void flagForRemoval ()
 	{
 		this.needsRemoval = true;
@@ -113,5 +106,5 @@ public abstract class Entity implements Serializable
 
 	public abstract void checkCollision (Game game, Entity other);
 
-	public abstract void draw (Graphics2D g, Game game);
+	public abstract void draw (Graphics2D g);
 }

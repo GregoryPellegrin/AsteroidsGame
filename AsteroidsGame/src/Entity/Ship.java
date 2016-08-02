@@ -17,6 +17,7 @@ import java.util.List;
 public class Ship extends Entity implements Serializable
 {
 	protected List <Color> flamesMotorColor;
+	protected boolean firingEnabled;
 	
 	private static final double SPEED_SHIP_MAX = 6.5;
 	private static final double SPEED_STOP = 0.995;
@@ -29,12 +30,12 @@ public class Ship extends Entity implements Serializable
 	private final int MISSILE_MAX;
 	private final int FIRE_RATE;
 	private final int RECHARGE_COOLDOWN;
+	private final int KILL_SCORE;
 	
 	private boolean movePressed;
 	private boolean rotationRightPressed;
 	private boolean rotationLeftPressed;
 	private boolean firePressed;
-	private boolean firingEnabled;
 	private double speedShip;
 	private double speedMissile;
 	private int consecutiveShots;
@@ -44,12 +45,13 @@ public class Ship extends Entity implements Serializable
 	
 	public Ship (Vector position, Vector velocity, Color shipColor, Color missileColor, double speedShip, double speedMissile, double radius, double speedRotation, int missileMax, int fireRate, int rechargeCooldown, int life, int killScore)
 	{
-		super(position, velocity, shipColor, radius, life, killScore);
+		super(position, velocity, shipColor, radius, life);
 		
 		this.MISSILE_COLOR = missileColor;
 		this.MISSILE_MAX = missileMax;
 		this.FIRE_RATE = fireRate;
 		this.RECHARGE_COOLDOWN = rechargeCooldown;
+		this.KILL_SCORE = killScore;
 		
 		this.flamesMotorColor = new ArrayList <> ();
 		this.missile = new ArrayList <> ();
@@ -96,12 +98,7 @@ public class Ship extends Entity implements Serializable
 	{
 		this.firePressed = state;
 	}
-
-	public void setFiringEnabled (boolean state)
-	{
-		this.firingEnabled = state;
-	}
-
+	
 	public void setSpeedShip (double speed)
 	{
 		this.speedShip = speed;
@@ -114,10 +111,11 @@ public class Ship extends Entity implements Serializable
 
 	public void reset ()
 	{
-		this.rotation = SPEED_ROTATION_DEFAULT;
+		this.rotation = Ship.SPEED_ROTATION_DEFAULT;
 		this.missile.clear();
+		super.speed.set(0.0, 0.0);
 	}
-
+	
 	@Override
 	public void update (Game game)
 	{
@@ -180,5 +178,5 @@ public class Ship extends Entity implements Serializable
 	public void checkCollision (Game game, Entity other) {}
 
 	@Override
-	public void draw (Graphics2D g, Game game) {}
+	public void draw (Graphics2D g) {}
 }

@@ -317,7 +317,7 @@ public class Game extends JFrame
 					break;
 				
 				case Player.INVULNERABLE_COOLDOWN_LIMIT:
-					this.getPlayer().setFiringEnabled(true);
+					this.getPlayer().canFiring();
 					break;
 			}
 		}

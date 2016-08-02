@@ -75,14 +75,18 @@ public class Player extends Ship implements Serializable
 		return this.score;
 	}
 	
+	public void canFiring ()
+	{
+		super.firingEnabled = true;
+	}
+	
 	@Override
 	public void reset ()
 	{
 		super.reset();
 		
 		super.position.set(WorldPanel.W_MAP_PIXEL / 2.0, WorldPanel.H_MAP_PIXEL - 50);
-		super.speed.set(0.0, 0.0);
-		super.setFiringEnabled(false);
+		super.firingEnabled = false;
 	}
 	
 	@Override
@@ -99,12 +103,12 @@ public class Player extends Ship implements Serializable
 				super.resetLife();
 			}
 			
-			super.setFiringEnabled(false);
+			super.firingEnabled = false;
 		}
 	}
 	
 	@Override
-	public void draw (Graphics2D g, Game game)
+	public void draw (Graphics2D g)
 	{
 		if (! this.isPlayerInvulnerable() || ((super.getAnimationFrame() % 20) < 10))
 		{
