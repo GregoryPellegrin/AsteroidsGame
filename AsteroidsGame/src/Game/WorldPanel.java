@@ -6,8 +6,7 @@
 package Game;
 
 import Entity.Entity;
-import Entity.Star;
-import Util.Vector;
+import Effect.Star;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,7 +31,6 @@ public class WorldPanel extends JPanel
 	private final ArrayList <Star> starBackground = new ArrayList <> ();
 	private final Game game;
 	
-	private Font massiveFont;
 	private Font largeFont;
 	private Font mediumFont;
 
@@ -50,7 +48,6 @@ public class WorldPanel extends JPanel
 		{
 			Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File ("ressources/arcadeClassic.ttf"));
 			
-			this.massiveFont = arcadeFont.deriveFont(Font.PLAIN, 40);
 			this.largeFont = arcadeFont.deriveFont(Font.PLAIN, 30);
 			this.mediumFont = arcadeFont.deriveFont(Font.PLAIN, 25);
 		}
@@ -59,13 +56,7 @@ public class WorldPanel extends JPanel
 			System.out.println(e.getMessage());
 		}
 	}
-
-	private void drawTextCentered (Graphics2D g, Font font, String text, int y)
-	{
-		g.setFont(font);
-		g.drawString(text, (WorldPanel.W_MAP_PIXEL / 2) - (g.getFontMetrics().stringWidth(text) / 2), (WorldPanel.H_MAP_PIXEL / 2) + y);
-	}
-
+	
 	private void drawEntity (Graphics2D g2d, Entity entity, double x, double y)
 	{
 		g2d.translate(x, y);
@@ -77,42 +68,25 @@ public class WorldPanel extends JPanel
 		
 		entity.draw(g2d);
 	}
-
+	
 	@Override
 	public void paintComponent (Graphics g)
 	{
 		super.paintComponent(g);
-
+		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(WorldPanel.COLOR_DEFAULT);
 		
 		AffineTransform identity = g2d.getTransform();
-
+		
 		Iterator <Entity> iter = this.game.getEntities().iterator();
 		while (iter.hasNext())
 		{
 			Entity entity = iter.next();
 			
-			if ((entity != this.game.getPlayer()) || this.game.canDrawPlayer())
-			{
-				Vector pos = entity.getPosition();
-
-				this.drawEntity(g2d, entity, pos.x, pos.y);
-				g2d.setTransform(identity);
-
-				double radius = entity.getCollisionRadius();
-				double x = (pos.x < radius) ? pos.x + WorldPanel.W_MAP_PIXEL
-						: (pos.x > WorldPanel.W_MAP_PIXEL - radius) ? pos.x - WorldPanel.W_MAP_PIXEL : pos.x;
-				double y = (pos.y < radius) ? pos.y + WorldPanel.H_MAP_PIXEL
-						: (pos.y > WorldPanel.H_MAP_PIXEL - radius) ? pos.y - WorldPanel.H_MAP_PIXEL : pos.y;
-
-				if ((x != pos.x) || (y != pos.y))
-				{
-					this.drawEntity(g2d, entity, x, y);
-					g2d.setTransform(identity);
-				}
-			}
+			this.drawEntity(g2d, entity, entity.getPosition().x, entity.getPosition().y);
+			g2d.setTransform(identity);
 		}
 		
 		g2d.setFont(this.largeFont);
@@ -128,7 +102,7 @@ public class WorldPanel extends JPanel
 		for (int i = 0; i < WorldPanel.STAR_BACKGROUND_MAX; i++)
 		{
 			this.starBackground.get(i).update();
-			this.starBackground.get(i).drawStar(g2d);
+			this.starBackground.get(i).draw(g2d);
 		}
 		
 		g2d.setColor(WorldPanel.COLOR_DEFAULT);

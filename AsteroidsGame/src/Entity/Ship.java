@@ -5,7 +5,6 @@
 
 package Entity;
 
-import Game.Game;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,15 +15,15 @@ import java.util.List;
 
 public class Ship extends Entity implements Serializable
 {
+	public final List <Missile> missile;
+	
 	protected List <Color> flamesMotorColor;
-	protected boolean firingEnabled;
 	
 	private static final double SPEED_SHIP_MAX = 6.5;
 	private static final double SPEED_STOP = 0.995;
 	private static final double SPEED_ROTATION_DEFAULT = -Math.PI / 2.0;
 	private static final int CONSECUTIVE_SHOTS_MAX = 8;
 	
-	private final List <Missile> missile;
 	private final Color MISSILE_COLOR;
 	private final double SPEED_ROTATION;
 	private final int MISSILE_MAX;
@@ -43,9 +42,9 @@ public class Ship extends Entity implements Serializable
 	private int overheatCooldown;
 	private int animationFrame;
 	
-	public Ship (Vector position, Vector velocity, Color shipColor, Color missileColor, double speedShip, double speedMissile, double radius, double speedRotation, int missileMax, int fireRate, int rechargeCooldown, int life, int killScore)
+	public Ship (Vector position, Vector velocity, Color shipColor, Color missileColor, double speedShip, double speedMissile, double radius, double speedRotation, int missileMax, int fireRate, int rechargeCooldown, int life, int killScore, int type)
 	{
-		super(position, velocity, shipColor, radius, life);
+		super(position, velocity, shipColor, radius, life, type);
 		
 		this.MISSILE_COLOR = missileColor;
 		this.MISSILE_MAX = missileMax;
@@ -61,7 +60,6 @@ public class Ship extends Entity implements Serializable
 		this.rotationRightPressed = false;
 		this.rotationLeftPressed = false;
 		this.firePressed = false;
-		this.firingEnabled = true;
 		this.speedShip = speedShip;
 		this.speedMissile = speedMissile;
 		this.fireCooldown = 0;
@@ -69,14 +67,14 @@ public class Ship extends Entity implements Serializable
 		this.animationFrame = 0;
 	}
 	
-	public int getAnimationFrame ()
-	{
-		return this.animationFrame;
-	}
-	
 	public boolean isMovePressed ()
 	{
 		return this.movePressed;
+	}
+	
+	public int getAnimationFrame ()
+	{
+		return this.animationFrame;
 	}
 
 	public void setMove (boolean state)
@@ -103,23 +101,26 @@ public class Ship extends Entity implements Serializable
 	{
 		this.speedShip = speed;
 	}
-
+	
 	public void setSpeedMissile (double speed)
 	{
 		this.speedMissile = speed;
 	}
 
+	@Override
 	public void reset ()
 	{
+		super.reset();
+		
 		this.rotation = Ship.SPEED_ROTATION_DEFAULT;
 		this.missile.clear();
 		super.speed.set(0.0, 0.0);
 	}
 	
 	@Override
-	public void update (Game game)
+	public void update ()
 	{
-		super.update(game);
+		super.update();
 
 		this.animationFrame = this.animationFrame + 1;
 		
@@ -148,7 +149,7 @@ public class Ship extends Entity implements Serializable
 		
 		this.fireCooldown = this.fireCooldown- 1;
 		this.overheatCooldown = this.overheatCooldown - 1;
-		if (this.firingEnabled && this.firePressed && (this.fireCooldown <= 0) && (this.overheatCooldown <= 0))
+		if (this.firePressed && (this.fireCooldown <= 0) && (this.overheatCooldown <= 0))
 		{
 			if (this.missile.size() < this.MISSILE_MAX)
 			{
@@ -157,7 +158,6 @@ public class Ship extends Entity implements Serializable
 				Missile bullet = new Missile(this, this.MISSILE_COLOR, this.rotation, this.speedMissile);
 				
 				this.missile.add(bullet);
-				game.registerEntity(bullet);
 			}
 			
 			this.consecutiveShots = this.consecutiveShots + 1;
@@ -173,9 +173,22 @@ public class Ship extends Entity implements Serializable
 				this.consecutiveShots = this.consecutiveShots - 1;
 		}
 	}
-
+	
 	@Override
-	public void checkCollision (Game game, Entity other) {}
+	public void checkCollision (Entity other)
+	{
+		if (other.getType() == Entity.MISSILE)
+			if (this.getId() != ((Missile) other).shipId)
+			{
+				super.life = super.life - 1;
+				
+				if (super.life == 0)
+					super.flagForRemoval();
+			}
+		
+		if (other.getType() == Entity.COMPUTER)
+			super.flagForRemoval();
+	}
 
 	@Override
 	public void draw (Graphics2D g) {}

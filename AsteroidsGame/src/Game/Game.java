@@ -18,11 +18,12 @@
 
 package Game;
 
-import Entity.Ennemi;
+import Character.Computer;
 import Entity.Entity;
-import Entity.Player;
-import Ennemi.SuperSpeedShip;
-import Entity.Story;
+import Character.Player;
+import Ship.SuperSpeedShip;
+import Effect.Story;
+import Entity.Ship;
 import Util.Clock;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
@@ -161,19 +162,14 @@ public class Game extends JFrame
 		return this.player;
 	}
 
-	public boolean canDrawPlayer ()
+	/*public boolean canDrawPlayer ()
 	{
 		return this.player.canDrawPlayer();
-	}
+	}*/
 
 	public int getScore ()
 	{
 		return this.player.getScore();
-	}
-
-	public void registerEntity (Entity entity)
-	{
-		this.pendingEntities.add(entity);
 	}
 	
 	private boolean isGameStart ()
@@ -244,7 +240,7 @@ public class Game extends JFrame
 		//Envoyer son Entity
 		//Ajouter les Entity recu du serveur
 		for (int i = 0; i < 4 * 2; i++)
-			this.registerEntity(new SuperSpeedShip (50 + i * 50, 100, Ennemi.START_LEFT));
+			this.pendingEntities.add(new SuperSpeedShip (50 + i * 50, 100, Computer.START_LEFT, Entity.COMPUTER));
 		
 		this.revalidate();
 	}
@@ -303,10 +299,22 @@ public class Game extends JFrame
 	
 	private void updateGame ()
 	{
+		for (int i = 0; i < this.getPlayer().missile.size(); i++)
+		{
+			boolean find = false;
+			
+			for (int j = 0; j < this.entities.size(); j++)
+				if (this.getPlayer().missile.get(i).getId() == this.entities.get(j).getId())
+					find = true;
+			
+			if (find == false)
+				this.pendingEntities.add(this.getPlayer().missile.get(i));
+		}
+		
 		this.entities.addAll(this.pendingEntities);
 		this.pendingEntities.clear();
 		
-		if (this.getPlayer().deathCooldown > 0)
+		/*if (this.getPlayer().deathCooldown > 0)
 		{
 			this.getPlayer().deathCooldown = this.getPlayer().deathCooldown - 1;
 			
@@ -315,21 +323,12 @@ public class Game extends JFrame
 				case Player.RESPAWN_COOLDOWN_LIMIT:
 					this.getPlayer().reset();
 					break;
-				
-				case Player.INVULNERABLE_COOLDOWN_LIMIT:
-					this.getPlayer().canFiring();
-					break;
 			}
-		}
-		
-		//Envoyer son Entity
-		//Ajouter les Entity recu du serveur
+		}*/
 		
 		for (Entity entity : this.entities)
-			entity.update(this);
+			entity.update();
 		
-		//Peut etre faire la partie du check de la collision coté serveur
-		//Comme ca ca enleverait le check de collision et le removal et on aurait juste a update les Entity
 		for (int i = 0; i < this.entities.size(); i++)
 		{
 			Entity a = this.entities.get(i);
@@ -337,11 +336,11 @@ public class Game extends JFrame
 			for (int j = i + 1; j < this.entities.size(); j++)
 			{
 				Entity b = this.entities.get(j);
-
-				if (((i != j) && a.checkCollision(b)) && (((a != this.getPlayer()) && (b != this.getPlayer())) || (! this.getPlayer().isPlayerInvulnerable())))
+				
+				if ((i != j) && a.isCollision(b))
 				{
-					a.checkCollision(this, b);
-					b.checkCollision(this, a);
+					a.checkCollision(b);
+					b.checkCollision(a);
 				}
 			}
 		}

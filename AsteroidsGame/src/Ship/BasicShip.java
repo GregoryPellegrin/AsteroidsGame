@@ -3,17 +3,16 @@
  * pellegrin.gregory.work@gmail.com
  */
 
-package Ennemi;
+package Ship;
 
-import Entity.Ennemi;
-import Game.Game;
+import Entity.Ship;
 import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class BasicShip extends Ennemi implements Serializable
+public class BasicShip extends Ship implements Serializable
 {
 	private static final double SPEED_SHIP = 0.0285;
 	private static final double SPEED_MISSILE = 6.75;
@@ -22,10 +21,11 @@ public class BasicShip extends Ennemi implements Serializable
 	private static final int FIRE_RATE = 4;
 	private static final int RECHARGE_COOLDOWN = 30;
 	private static final int LIFE = 1;
+	private static final int KILL_SCORE = 10;
 	
-	public BasicShip (int x, int y, int startingPosition)
+	public BasicShip (int x, int y, int startingPosition, int type)
 	{
-		super (new Vector (x, y), new Vector (1, 0), Color.RED, Color.RED, BasicShip.SPEED_SHIP, BasicShip.SPEED_MISSILE, 10.0, BasicShip.SPEED_ROTATION, BasicShip.MISSILE_MAX, BasicShip.FIRE_RATE, BasicShip.RECHARGE_COOLDOWN, startingPosition, LIFE, 100);
+		super (new Vector (x, y), new Vector (1, 0), Color.RED, Color.RED, BasicShip.SPEED_SHIP, BasicShip.SPEED_MISSILE, 10.0, BasicShip.SPEED_ROTATION, BasicShip.MISSILE_MAX, BasicShip.FIRE_RATE, BasicShip.RECHARGE_COOLDOWN, BasicShip.LIFE, BasicShip.KILL_SCORE, type);
 		
 		super.flamesMotorColor.add(Color.YELLOW);
 		super.flamesMotorColor.add(Color.RED);

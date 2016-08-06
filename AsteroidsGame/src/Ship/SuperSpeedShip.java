@@ -3,17 +3,16 @@
  * pellegrin.gregory.work@gmail.com
  */
 
-package Ennemi;
+package Ship;
 
-import Entity.Ennemi;
-import Game.Game;
+import Entity.Ship;
 import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class SuperSpeedShip extends Ennemi implements Serializable
+public class SuperSpeedShip extends Ship implements Serializable
 {
 	private static final double SPEED_SHIP = 0.0785;
 	private static final double SPEED_MISSILE = 7.75;
@@ -21,11 +20,12 @@ public class SuperSpeedShip extends Ennemi implements Serializable
 	private static final int MISSILE_MAX = 6;
 	private static final int FIRE_RATE = 4;
 	private static final int RECHARGE_COOLDOWN = 30;
-	private static final int LIFE = 2;
+	private static final int LIFE = 4;
+	private static final int KILL_SCORE = 50;
 	
-	public SuperSpeedShip (int x, int y, int startingPosition)
+	public SuperSpeedShip (int x, int y, int startingPosition, int type)
 	{
-		super (new Vector (x, y), new Vector (1, 0), Color.RED, Color.RED, SuperSpeedShip.SPEED_SHIP, SuperSpeedShip.SPEED_MISSILE, 10.0, SuperSpeedShip.ROTATION_SPEED, SuperSpeedShip.MISSILE_MAX, SuperSpeedShip.FIRE_RATE, SuperSpeedShip.RECHARGE_COOLDOWN, startingPosition, LIFE, 300);
+		super (new Vector (x, y), new Vector (1, 0), Color.RED, Color.RED, SuperSpeedShip.SPEED_SHIP, SuperSpeedShip.SPEED_MISSILE, 10.0, SuperSpeedShip.ROTATION_SPEED, SuperSpeedShip.MISSILE_MAX, SuperSpeedShip.FIRE_RATE, SuperSpeedShip.RECHARGE_COOLDOWN, SuperSpeedShip.LIFE, SuperSpeedShip.KILL_SCORE, type);
 		
 		super.flamesMotorColor.add(Color.YELLOW);
 		super.flamesMotorColor.add(Color.RED);

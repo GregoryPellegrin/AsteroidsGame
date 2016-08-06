@@ -5,7 +5,7 @@
 
 package Game;
 
-import Entity.Star;
+import Effect.Star;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -81,7 +81,7 @@ public class MenuPanel extends JPanel
 		for (int i = 0; i < WorldPanel.STAR_BACKGROUND_MAX; i++)
 		{
 			this.starBackground.get(i).update();
-			this.starBackground.get(i).drawStar(g2d);
+			this.starBackground.get(i).draw(g2d);
 		}
 
 		g.setColor(Color.RED);

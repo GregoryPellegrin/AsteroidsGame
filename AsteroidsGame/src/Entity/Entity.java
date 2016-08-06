@@ -5,7 +5,6 @@
 
 package Entity;
 
-import Game.Game;
 import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
@@ -14,21 +13,26 @@ import java.io.Serializable;
 
 public abstract class Entity implements Serializable
 {
+	public static final int PLAYER = 0;
+	public static final int COMPUTER = 1;
+	public static final int MISSILE = 2;
+	
 	protected Vector position;
 	protected Vector speed;
 	protected Color color;
 	protected double rotation;
-	protected double collisionRadius;
 	protected int life;
 	
 	private static int total = 0;
 	
+	private final double collisionRadius;
 	private final int id;
 	private final int lives;
+	private final int type;
 	
 	private boolean needsRemoval;
 	
-	public Entity (Vector position, Vector speed, Color color, double radius, int lives)
+	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int type)
 	{
 		Entity.total = Entity.total + 1;
 		this.id = Entity.total;
@@ -40,6 +44,7 @@ public abstract class Entity implements Serializable
 		this.rotation = 0.0f;
 		this.lives = lives;
 		this.life = this.lives;
+		this.type = type;
 		this.needsRemoval = false;
 	}
 	
@@ -57,25 +62,20 @@ public abstract class Entity implements Serializable
 	{
 		return this.rotation;
 	}
-
-	public double getCollisionRadius ()
-	{
-		return this.collisionRadius;
-	}
 	
 	public int getId ()
 	{
 		return this.id;
 	}
 	
+	public int getType ()
+	{
+		return this.type;
+	}
+	
 	public void flagForRemoval ()
 	{
 		this.needsRemoval = true;
-	}
-	
-	public void resetLife ()
-	{
-		this.life = this.lives;
 	}
 	
 	public void rotate (double amount)
@@ -84,7 +84,12 @@ public abstract class Entity implements Serializable
 		this.rotation %= Math.PI * 2;
 	}
 	
-	public void update (Game game)
+	public void reset ()
+	{
+		this.life = this.lives;
+	}
+	
+	public void update ()
 	{
 		this.position.add(this.speed);
 		
@@ -97,14 +102,14 @@ public abstract class Entity implements Serializable
 		this.position.y %= WorldPanel.H_MAP_PIXEL;
 	}
 	
-	public boolean checkCollision (Entity entity)
+	public boolean isCollision (Entity entity)
 	{
-		double radius = entity.getCollisionRadius() + this.collisionRadius;
+		double radius = entity.collisionRadius + this.collisionRadius;
 		
 		return (this.position.getDistanceToSquared(entity.position) < (radius * radius));
 	}
-
-	public abstract void checkCollision (Game game, Entity other);
+	
+	public abstract void checkCollision (Entity other);
 
 	public abstract void draw (Graphics2D g);
 }

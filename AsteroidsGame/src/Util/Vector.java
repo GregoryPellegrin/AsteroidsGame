@@ -24,10 +24,10 @@ public class Vector implements Serializable
 		this.y = y;
 	}
 
-	public Vector (Vector vec)
+	public Vector (Vector vector)
 	{
-		this.x = vec.x;
-		this.y = vec.y;
+		this.x = vector.x;
+		this.y = vector.y;
 	}
 
 	public Vector set (double x, double y)
@@ -38,10 +38,10 @@ public class Vector implements Serializable
 		return this;
 	}
 
-	public Vector add (Vector vec)
+	public Vector add (Vector vector)
 	{
-		this.x = this.x + vec.x;
-		this.y = this.y + vec.y;
+		this.x = this.x + vector.x;
+		this.y = this.y + vector.y;
 		
 		return this;
 	}
@@ -74,10 +74,10 @@ public class Vector implements Serializable
 		return ((x * x) + (y * y));
 	}
 
-	public double getDistanceToSquared (Vector vec)
+	public double getDistanceToSquared (Vector vector)
 	{
-		double dx = this.x - vec.x;
-		double dy = this.y - vec.y;
+		double dx = this.x - vector.x;
+		double dy = this.y - vector.y;
 		
 		return ((dx * dx) + (dy * dy));
 	}

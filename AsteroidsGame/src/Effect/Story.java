@@ -3,7 +3,7 @@
  * pellegrin.gregory.work@gmail.com
  */
 
-package Entity;
+package Effect;
 
 import java.awt.Color;
 import java.awt.Font;
