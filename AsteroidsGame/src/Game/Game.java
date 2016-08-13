@@ -21,6 +21,7 @@
 
 /*
  * BUG
+ * 
  * Vie des Ship = 4, apres 2 tir le vaisseau meurt
  */
 
