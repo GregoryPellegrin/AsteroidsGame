@@ -26,19 +26,15 @@
 
 package Game;
 
-import Character.Computer;
 import Entity.Entity;
 import Character.Player;
 import Client.Client;
-import Ship.SuperSpeedShip;
 import Effect.Story;
-import Entity.Ship;
 import Util.Clock;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JFrame;
