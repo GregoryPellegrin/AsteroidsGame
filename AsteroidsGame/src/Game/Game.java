@@ -6,8 +6,11 @@
 /*
  * TODO
  * 
- * Refactoring
- * Multijoueurs
+ * Serveur : Séparer le receive du send
+ * Player : SuperSpeed, Flammes
+ * Serveur : C'est lui qui donne l'id lorsque Client fait sa premiere requete
+ * Menu : Doit afficher la disponibilité du Serveur
+ * 
  * Collisions
  * Objectifs annexes
  * Map
@@ -253,6 +256,8 @@ public class Game extends JFrame
 		//	this.pendingEntities.add(new SuperSpeedShip (50 + i * 50, 100, Computer.START_LEFT, Entity.COMPUTER));
 		
 		this.revalidate();
+		
+		System.out.println(this.player.getId());
 	}
 
 	private void startMenu ()
