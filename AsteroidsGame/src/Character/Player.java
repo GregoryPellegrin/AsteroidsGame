@@ -6,12 +6,14 @@
 package Character;
 
 import Entity.Entity;
+import Entity.Missile;
 import Entity.Ship;
 import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.List;
 
 public class Player extends Ship implements Serializable
 {
@@ -40,6 +42,11 @@ public class Player extends Ship implements Serializable
 		this.score = 0;
 	}
 	
+	public int getScore ()
+	{
+		return this.score;
+	}
+	
 	public void setSuperSpeed (boolean superSpeed)
 	{
 		if (superSpeed)
@@ -54,11 +61,6 @@ public class Player extends Ship implements Serializable
 			this.setSpeedShip(Player.SPEED_SHIP);
 			this.setSpeedMissile(Player.SPEED_MISSILE);
 		}
-	}
-	
-	public int getScore ()
-	{
-		return this.score;
 	}
 	
 	@Override

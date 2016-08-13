@@ -121,7 +121,7 @@ public class Ship extends Entity implements Serializable
 	public void update ()
 	{
 		super.update();
-
+		
 		this.animationFrame = this.animationFrame + 1;
 		
 		if (this.rotationLeftPressed != this.rotationRightPressed)
@@ -178,7 +178,7 @@ public class Ship extends Entity implements Serializable
 	public void checkCollision (Entity other)
 	{
 		if (other.getType() == Entity.MISSILE)
-			if (this.getId() != ((Missile) other).shipId)
+			if (this.getId() != ((Missile) other).idShip)
 			{
 				super.life = super.life - 1;
 				

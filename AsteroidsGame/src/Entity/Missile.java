@@ -16,7 +16,7 @@ public class Missile extends Entity implements Serializable
 {
 	private static final int LIFESPAN_MAX = 60;
 	
-	public final int shipId;
+	public final int idShip;
 	
 	private int lifeSpan;
 
@@ -24,8 +24,13 @@ public class Missile extends Entity implements Serializable
 	{
 		super(new Vector(owner.getPosition()), new Vector(direction).scale(speed), color, 2.0, 1, Entity.MISSILE);
 		
-		this.shipId = owner.getId();
+		this.idShip = owner.getId();
 		this.lifeSpan = LIFESPAN_MAX;
+	}
+	
+	public int getIdShip ()
+	{
+		return this.idShip;
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class Missile extends Entity implements Serializable
 			super.flagForRemoval();
 		
 		if (other.getClass() == Player.class)
-			if (other.getId() != this.shipId)
+			if (other.getId() != this.idShip)
 				super.flagForRemoval();
 	}
 	

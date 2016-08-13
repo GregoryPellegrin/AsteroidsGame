@@ -16,11 +16,17 @@
  * Son
  */
 
+/*
+ * BUG
+ * Vie des Ship = 4, apres 2 tir le vaisseau meurt
+ */
+
 package Game;
 
 import Character.Computer;
 import Entity.Entity;
 import Character.Player;
+import Client.Client;
 import Ship.SuperSpeedShip;
 import Effect.Story;
 import Entity.Ship;
@@ -50,6 +56,7 @@ public class Game extends JFrame
 	private List <Entity> pendingEntities;
 	private Clock logicTimer;
 	private Player player;
+	private Client client;
 	private boolean isGameStart;
 	private boolean isGameStop;
 	
@@ -231,16 +238,19 @@ public class Game extends JFrame
 		this.pendingEntities = new ArrayList <> ();
 		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		this.player = new Player ();
+		this.client = new Client (this.player);
 		this.isGameStop = false;
 		
 		this.resetEntityLists();
 		this.addKeyListener(this.playerListener);
 		this.add(this.world, BorderLayout.CENTER);
 		
+		Thread test = new Thread (this.client);
+		test.start();
 		//Envoyer son Entity
 		//Ajouter les Entity recu du serveur
-		for (int i = 0; i < 4 * 2; i++)
-			this.pendingEntities.add(new SuperSpeedShip (50 + i * 50, 100, Computer.START_LEFT, Entity.COMPUTER));
+		//for (int i = 0; i < 4 * 2; i++)
+		//	this.pendingEntities.add(new SuperSpeedShip (50 + i * 50, 100, Computer.START_LEFT, Entity.COMPUTER));
 		
 		this.revalidate();
 	}
@@ -281,9 +291,9 @@ public class Game extends JFrame
 			this.logicTimer.update();
 			for (int i = 0; i < 5 && this.logicTimer.hasElapsedCycle(); i++)
 				this.updateGame();
-
+			
 			this.world.repaint();
-
+			
 			long delta = Game.FRAME_TIME - (System.nanoTime() - start);			
 			if (delta > 0)
 				try
@@ -299,58 +309,38 @@ public class Game extends JFrame
 	
 	private void updateGame ()
 	{
-		for (int i = 0; i < this.getPlayer().missile.size(); i++)
-		{
-			boolean find = false;
-			
-			for (int j = 0; j < this.entities.size(); j++)
-				if (this.getPlayer().missile.get(i).getId() == this.entities.get(j).getId())
-					find = true;
-			
-			if (find == false)
-				this.pendingEntities.add(this.getPlayer().missile.get(i));
-		}
-		
-		this.entities.addAll(this.pendingEntities);
-		this.pendingEntities.clear();
-		
-		/*if (this.getPlayer().deathCooldown > 0)
-		{
-			this.getPlayer().deathCooldown = this.getPlayer().deathCooldown - 1;
-			
-			switch (this.getPlayer().deathCooldown)
-			{
-				case Player.RESPAWN_COOLDOWN_LIMIT:
-					this.getPlayer().reset();
-					break;
-			}
-		}*/
-		
-		for (Entity entity : this.entities)
-			entity.update();
-		
-		for (int i = 0; i < this.entities.size(); i++)
-		{
-			Entity a = this.entities.get(i);
-
-			for (int j = i + 1; j < this.entities.size(); j++)
-			{
-				Entity b = this.entities.get(j);
-				
-				if ((i != j) && a.isCollision(b))
-				{
-					a.checkCollision(b);
-					b.checkCollision(a);
-				}
-			}
-		}
-		
-		Iterator <Entity> iter = this.entities.iterator();
-		while (iter.hasNext())
-			if (iter.next().needsRemoval())
-				iter.remove();
+		this.player.update();
+		this.entities.clear();
+		this.entities.addAll(this.client.update(this.player));
+		//this.updatePlayer();
 	}
+	
+	private void updatePlayer ()
+	{
+		boolean find = false;
+		
+		for (int i = 0; ((i < this.entities.size()) && (! find)); i++)
+			if (this.entities.get(i).getId() == this.player.getId())
+			{
+				find = true;
+				
+				Player player = (Player) this.entities.get(i);
+				this.player = player;
+				
+				/*for (int j = 0; j < player.missile.size(); j++)
+				{
+					find = false;
 
+					for (int k = 0; k < player.missile.size(); k++)
+						if (player.missile.get(k).getId() == this.player.getId())
+							find = true;
+
+					if (find == false)
+						this.entities.add(player.missile.get(j));
+				}*/
+			}
+	}
+	
 	public static void main (String [] args)
 	{
 		Game game = new Game();
