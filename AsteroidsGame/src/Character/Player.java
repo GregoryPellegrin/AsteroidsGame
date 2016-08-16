@@ -6,14 +6,12 @@
 package Character;
 
 import Entity.Entity;
-import Entity.Missile;
 import Entity.Ship;
 import Game.WorldPanel;
 import Util.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
-import java.util.List;
 
 public class Player extends Ship implements Serializable
 {

@@ -34,9 +34,6 @@ public abstract class Entity implements Serializable
 	
 	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int type)
 	{
-		//Entity.total = Entity.total + 1;
-		//this.id = Entity.total;
-		
 		this.position = position;
 		this.speed = speed;
 		this.color = color;
@@ -46,6 +43,7 @@ public abstract class Entity implements Serializable
 		this.life = this.lives;
 		this.type = type;
 		this.needsRemoval = false;
+		this.id = 0;
 	}
 	
 	public Vector getPosition ()

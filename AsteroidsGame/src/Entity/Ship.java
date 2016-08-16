@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Ship extends Entity implements Serializable
 {
-	public final List <Missile> missile;
+	public final List <Missile> missiles;
 	
 	protected List <Color> flamesMotorColor;
 	
@@ -53,7 +53,7 @@ public class Ship extends Entity implements Serializable
 		this.KILL_SCORE = killScore;
 		
 		this.flamesMotorColor = new ArrayList <> ();
-		this.missile = new ArrayList <> ();
+		this.missiles = new ArrayList <> ();
 		this.rotation = Ship.SPEED_ROTATION_DEFAULT;
 		this.SPEED_ROTATION = speedRotation;
 		this.movePressed = false;
@@ -113,7 +113,7 @@ public class Ship extends Entity implements Serializable
 		super.reset();
 		
 		this.rotation = Ship.SPEED_ROTATION_DEFAULT;
-		this.missile.clear();
+		this.missiles.clear();
 		super.speed.set(0.0, 0.0);
 	}
 	
@@ -138,7 +138,7 @@ public class Ship extends Entity implements Serializable
 		if (super.speed.getLengthSquared() != 0.0)
 			super.speed.scale(Ship.SPEED_STOP);
 		
-		Iterator <Missile> iter = this.missile.iterator();
+		Iterator <Missile> iter = this.missiles.iterator();
 		while (iter.hasNext())
 		{
 			Missile bullet = iter.next();
@@ -151,13 +151,13 @@ public class Ship extends Entity implements Serializable
 		this.overheatCooldown = this.overheatCooldown - 1;
 		if (this.firePressed && (this.fireCooldown <= 0) && (this.overheatCooldown <= 0))
 		{
-			if (this.missile.size() < this.MISSILE_MAX)
+			if (this.missiles.size() < this.MISSILE_MAX)
 			{
 				this.fireCooldown = this.FIRE_RATE;
 				
 				Missile bullet = new Missile(this, this.MISSILE_COLOR, this.rotation, this.speedMissile);
 				
-				this.missile.add(bullet);
+				this.missiles.add(bullet);
 			}
 			
 			this.consecutiveShots = this.consecutiveShots + 1;
