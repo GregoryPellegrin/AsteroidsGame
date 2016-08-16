@@ -281,7 +281,7 @@ public class Game extends JFrame
 				}
 		}
 	}
-
+	
 	private void startGame ()
 	{
 		this.resetGame();
@@ -314,7 +314,7 @@ public class Game extends JFrame
 		this.player.update();
 		this.entities.clear();
 		this.entities.addAll(this.client.update(this.player));
-		//this.updatePlayer();
+		this.updatePlayer();
 	}
 	
 	private void updatePlayer ()
@@ -326,20 +326,7 @@ public class Game extends JFrame
 			{
 				find = true;
 				
-				Player player = (Player) this.entities.get(i);
-				this.player = player;
-				
-				/*for (int j = 0; j < player.missile.size(); j++)
-				{
-					find = false;
-
-					for (int k = 0; k < player.missile.size(); k++)
-						if (player.missile.get(k).getId() == this.player.getId())
-							find = true;
-
-					if (find == false)
-						this.entities.add(player.missile.get(j));
-				}*/
+				this.player = (Player) this.entities.get(i);
 			}
 	}
 	

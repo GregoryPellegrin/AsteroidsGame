@@ -23,19 +23,19 @@ public abstract class Entity implements Serializable
 	protected double rotation;
 	protected int life;
 	
-	private static int total = 0;
+	//private static int total = 0;
 	
 	private final double collisionRadius;
-	private final int id;
 	private final int lives;
 	private final int type;
 	
 	private boolean needsRemoval;
+	private int id;
 	
 	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int type)
 	{
-		Entity.total = Entity.total + 1;
-		this.id = Entity.total;
+		//Entity.total = Entity.total + 1;
+		//this.id = Entity.total;
 		
 		this.position = position;
 		this.speed = speed;
@@ -76,6 +76,11 @@ public abstract class Entity implements Serializable
 	public void flagForRemoval ()
 	{
 		this.needsRemoval = true;
+	}
+	
+	public void setId (int id)
+	{
+		this.id = id;
 	}
 	
 	public void rotate (double amount)
