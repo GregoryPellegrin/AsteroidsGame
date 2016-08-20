@@ -241,20 +241,16 @@ public class Game extends JFrame
 		this.client = new Client (this.player);
 		this.isGameStop = false;
 		
+		this.player.setId(this.client.CLIENT_ADRESSE);
+		
+		Thread clientThread = new Thread (this.client);
+		clientThread.start();
+		
 		this.resetEntityLists();
 		this.addKeyListener(this.playerListener);
 		this.add(this.world, BorderLayout.CENTER);
 		
-		Thread test = new Thread (this.client);
-		test.start();
-		//Envoyer son Entity
-		//Ajouter les Entity recu du serveur
-		//for (int i = 0; i < 4 * 2; i++)
-		//	this.pendingEntities.add(new SuperSpeedShip (50 + i * 50, 100, Computer.START_LEFT, Entity.COMPUTER));
-		
 		this.revalidate();
-		
-		System.out.println(this.player.getId());
 	}
 
 	private void startMenu ()
@@ -314,15 +310,10 @@ public class Game extends JFrame
 		this.player.update();
 		this.entities.clear();
 		this.entities.addAll(this.client.update(this.player));
-		this.updatePlayer();
-	}
-	
-	private void updatePlayer ()
-	{
-		boolean find = false;
 		
+		boolean find = false;
 		for (int i = 0; ((i < this.entities.size()) && (! find)); i++)
-			if (this.entities.get(i).getId() == this.player.getId())
+			if (this.entities.get(i).getId().equals(this.player.getId()))
 			{
 				find = true;
 				
@@ -332,7 +323,7 @@ public class Game extends JFrame
 	
 	public static void main (String [] args)
 	{
-		Game game = new Game();
+		Game game = new Game ();
 		
 		while (true)
 		{

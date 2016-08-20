@@ -23,14 +23,12 @@ public abstract class Entity implements Serializable
 	protected double rotation;
 	protected int life;
 	
-	//private static int total = 0;
-	
 	private final double collisionRadius;
 	private final int lives;
 	private final int type;
 	
+	private String id;
 	private boolean needsRemoval;
-	private int id;
 	
 	public Entity (Vector position, Vector speed, Color color, double radius, int lives, int type)
 	{
@@ -43,12 +41,17 @@ public abstract class Entity implements Serializable
 		this.life = this.lives;
 		this.type = type;
 		this.needsRemoval = false;
-		this.id = 0;
+		this.id = "";
 	}
 	
 	public Vector getPosition ()
 	{
 		return this.position;
+	}
+	
+	public String getId ()
+	{
+		return this.id;
 	}
 
 	public boolean needsRemoval ()
@@ -61,11 +64,6 @@ public abstract class Entity implements Serializable
 		return this.rotation;
 	}
 	
-	public int getId ()
-	{
-		return this.id;
-	}
-	
 	public int getType ()
 	{
 		return this.type;
@@ -76,7 +74,7 @@ public abstract class Entity implements Serializable
 		this.needsRemoval = true;
 	}
 	
-	public void setId (int id)
+	public void setId (String id)
 	{
 		this.id = id;
 	}

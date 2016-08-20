@@ -25,9 +25,12 @@ import java.util.List;
 
 public class Client implements Runnable
 {
-	public static final String HOST_NAME = "127.0.0.1";
-	public static final int BYTE_SIZE = 5000;
-	public static final int PORT = 2345;
+	public static final String SERVEUR_NAME = "127.0.0.1";
+	public static final int SERVEUR_PORT = 2345;
+	
+	public String CLIENT_ADRESSE;
+	
+	private static final int BYTE_SIZE = 5000;
 	
 	private List <Entity> entities;
 	private Object entity;
@@ -48,12 +51,23 @@ public class Client implements Runnable
 	@Override
 	public void run ()
 	{
+		try
+		{
+			InetAddress IP = InetAddress.getLocalHost();
+			this.CLIENT_ADRESSE = IP.getHostAddress();
+		}
+		catch (UnknownHostException e)
+		{
+			System.out.println("[CLIENT] UnknownHostException : " + e.getMessage());
+			System.out.println(Arrays.toString(e.getStackTrace()));
+		}
+		
 		while (true)
 		{
 			try
 			{
 				DatagramSocket client = new DatagramSocket ();
-				InetAddress adresse = InetAddress.getByName(Client.HOST_NAME);
+				InetAddress adresse = InetAddress.getByName(Client.SERVEUR_NAME);
 				ByteArrayOutputStream objectByteSendToServeur = new ByteArrayOutputStream (Client.BYTE_SIZE);
 				ObjectOutputStream objectStreamSendToServeur = new ObjectOutputStream (new BufferedOutputStream (objectByteSendToServeur));
 				
@@ -66,7 +80,7 @@ public class Client implements Runnable
 					bufferSendToServeur,
 					bufferSendToServeur.length,
 					adresse,
-					Client.PORT
+					Client.SERVEUR_PORT
 				);
 				
 				paquetSendToServeur.setData(bufferSendToServeur);
@@ -90,18 +104,6 @@ public class Client implements Runnable
 				
 				objectStreamGetFromServeur.close();
 				paquetGetFromServeur.setLength(bufferGetFromServeur.length);
-				
-				//println("[CLIENT] Nombres d'Entity recu " + entities.size());
-				
-				/*try
-				{
-					Thread.sleep(this.sleep);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("[CLIENT] InterruptedException : " + e.getMessage());
-					System.out.println(Arrays.toString(e.getStackTrace()));
-				}*/
 			} 
 			catch (SocketException e)
 			{

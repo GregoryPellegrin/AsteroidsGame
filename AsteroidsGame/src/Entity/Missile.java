@@ -16,7 +16,7 @@ public class Missile extends Entity implements Serializable
 {
 	private static final int LIFESPAN_MAX = 60;
 	
-	public final int idShip;
+	public final String idShip;
 	
 	private int lifeSpan;
 
@@ -28,7 +28,7 @@ public class Missile extends Entity implements Serializable
 		this.lifeSpan = LIFESPAN_MAX;
 	}
 	
-	public int getIdShip ()
+	public String getIdShip ()
 	{
 		return this.idShip;
 	}
@@ -51,7 +51,7 @@ public class Missile extends Entity implements Serializable
 			super.flagForRemoval();
 		
 		if (other.getClass() == Player.class)
-			if (other.getId() != this.idShip)
+			if (! other.getId().equals(this.idShip))
 				super.flagForRemoval();
 	}
 	
