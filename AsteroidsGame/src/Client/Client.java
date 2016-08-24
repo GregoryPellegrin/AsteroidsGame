@@ -39,6 +39,17 @@ public class Client implements Runnable
 	{
 		this.entities = new ArrayList <> ();
 		this.entity = entity;
+		
+		try
+		{
+			InetAddress IP = InetAddress.getLocalHost();
+			this.CLIENT_ADRESSE = IP.getHostAddress();
+		}
+		catch (UnknownHostException e)
+		{
+			System.out.println("[CLIENT] UnknownHostException : " + e.getMessage());
+			System.out.println(Arrays.toString(e.getStackTrace()));
+		}
 	}
 	
 	public List <Entity> update (Entity entity)
@@ -51,17 +62,6 @@ public class Client implements Runnable
 	@Override
 	public void run ()
 	{
-		try
-		{
-			InetAddress IP = InetAddress.getLocalHost();
-			this.CLIENT_ADRESSE = IP.getHostAddress();
-		}
-		catch (UnknownHostException e)
-		{
-			System.out.println("[CLIENT] UnknownHostException : " + e.getMessage());
-			System.out.println(Arrays.toString(e.getStackTrace()));
-		}
-		
 		while (true)
 		{
 			try
@@ -100,7 +100,8 @@ public class Client implements Runnable
 				ByteArrayInputStream objectByteGetFromServeur = new ByteArrayInputStream (bufferGetFromServeur);
 				ObjectInputStream objectStreamGetFromServeur = new ObjectInputStream (new BufferedInputStream (objectByteGetFromServeur));
 				
-				this.entities = (List <Entity>) objectStreamGetFromServeur.readObject();
+				this.entities.clear();
+				this.entities.addAll((List <Entity>) objectStreamGetFromServeur.readObject());
 				
 				objectStreamGetFromServeur.close();
 				paquetGetFromServeur.setLength(bufferGetFromServeur.length);

@@ -169,11 +169,6 @@ public class Game extends JFrame
 		return this.player;
 	}
 
-	/*public boolean canDrawPlayer ()
-	{
-		return this.player.canDrawPlayer();
-	}*/
-
 	public int getScore ()
 	{
 		return this.player.getScore();
@@ -307,9 +302,9 @@ public class Game extends JFrame
 	
 	private void updateGame ()
 	{
-		this.player.update();
 		this.entities.clear();
 		this.entities.addAll(this.client.update(this.player));
+		this.player.update();
 		
 		boolean find = false;
 		for (int i = 0; ((i < this.entities.size()) && (! find)); i++)
@@ -319,6 +314,9 @@ public class Game extends JFrame
 				
 				this.player = (Player) this.entities.get(i);
 			}
+		
+		if (! find)
+			this.entities.add(this.player);
 	}
 	
 	public static void main (String [] args)
