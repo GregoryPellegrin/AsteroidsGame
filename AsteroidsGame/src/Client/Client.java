@@ -105,7 +105,7 @@ public class Client implements Runnable
 				
 				objectStreamGetFromServeur.close();
 				paquetGetFromServeur.setLength(bufferGetFromServeur.length);
-			} 
+			}
 			catch (SocketException e)
 			{
 				System.out.println("[CLIENT] SocketException : " + e.getMessage());

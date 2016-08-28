@@ -282,6 +282,7 @@ public class Game extends JFrame
 			long start = System.nanoTime();
 			
 			this.logicTimer.update();
+			
 			for (int i = 0; i < 5 && this.logicTimer.hasElapsedCycle(); i++)
 				this.updateGame();
 			
