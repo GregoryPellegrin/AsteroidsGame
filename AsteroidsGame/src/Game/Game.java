@@ -123,7 +123,6 @@ public class Game extends JFrame
 				{
 					case KeyEvent.VK_W:
 						player.setMove(false);
-						player.setMove(false);
 						break;
 
 					case KeyEvent.VK_D:
