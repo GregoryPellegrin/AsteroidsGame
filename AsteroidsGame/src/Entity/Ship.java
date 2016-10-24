@@ -11,13 +11,12 @@ import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Ship extends Entity implements Serializable
 {
-	public final List <Missile> missiles;
+	public final ArrayList <Missile> missiles;
 	
-	protected List <Color> flamesMotorColor;
+	protected ArrayList <Color> flamesMotorColor;
 	
 	private static final double SPEED_SHIP_MAX = 6.5;
 	private static final double SPEED_STOP = 0.995;

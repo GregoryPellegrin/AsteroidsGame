@@ -36,8 +36,6 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import javax.swing.JFrame;
 
 public class Game extends JFrame
@@ -52,8 +50,8 @@ public class Game extends JFrame
 	private final KeyAdapter menuListener;
 	private final KeyAdapter playerListener;
 	
-	private List <Entity> entities;
-	private List <Entity> pendingEntities;
+	private ArrayList <Entity> entities;
+	private ArrayList <Entity> pendingEntities;
 	private Clock logicTimer;
 	private Player player;
 	private Client client;
@@ -92,7 +90,7 @@ public class Game extends JFrame
 			{
 				switch (e.getKeyCode())
 				{
-					case KeyEvent.VK_Z:
+					case KeyEvent.VK_W:
 						player.setMove(true);
 						break;
 
@@ -100,7 +98,7 @@ public class Game extends JFrame
 						player.setRotateRight(true);
 						break;
 
-					case KeyEvent.VK_Q:
+					case KeyEvent.VK_A:
 						player.setRotateLeft(true);
 						break;
 
@@ -123,7 +121,7 @@ public class Game extends JFrame
 			{
 				switch (e.getKeyCode())
 				{
-					case KeyEvent.VK_Z:
+					case KeyEvent.VK_W:
 						player.setMove(false);
 						break;
 
@@ -131,7 +129,7 @@ public class Game extends JFrame
 						player.setRotateRight(false);
 						break;
 						
-					case KeyEvent.VK_Q:
+					case KeyEvent.VK_A:
 						player.setRotateLeft(false);
 						break;
 
@@ -159,7 +157,7 @@ public class Game extends JFrame
 		this.setVisible(true);
 	}
 	
-	public List <Entity> getEntities ()
+	public ArrayList <Entity> getEntities ()
 	{
 		return this.entities;
 	}
@@ -212,7 +210,7 @@ public class Game extends JFrame
 		this.removeKeyListener();
 		this.remove(this.world);
 		
-		this.entities = new LinkedList <> ();
+		this.entities = new ArrayList <> ();
 		this.pendingEntities = new ArrayList <> ();
 		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		this.isGameStart = false;
@@ -229,7 +227,7 @@ public class Game extends JFrame
 		this.removeKeyListener();
 		this.remove(this.menu);
 		
-		this.entities = new LinkedList <> ();
+		this.entities = new ArrayList <> ();
 		this.pendingEntities = new ArrayList <> ();
 		this.logicTimer = new Clock (Game.FRAMES_PER_SECOND);
 		this.player = new Player ();
@@ -304,8 +302,7 @@ public class Game extends JFrame
 	private void updateGame ()
 	{
 		this.entities.clear();
-		this.entities.addAll(this.client.update(this.player));
-		this.player.update();
+		this.entities.addAll(this.client.getEntities());
 		
 		boolean find = false;
 		for (int i = 0; ((i < this.entities.size()) && (! find)); i++)
@@ -318,6 +315,9 @@ public class Game extends JFrame
 		
 		if (! find)
 			this.entities.add(this.player);
+		
+		this.player.update();
+		this.client.update(this.player);
 	}
 	
 	public static void main (String [] args)

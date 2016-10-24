@@ -21,7 +21,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Client implements Runnable
 {
@@ -32,7 +31,7 @@ public class Client implements Runnable
 	
 	private static final int BYTE_SIZE = 5000;
 	
-	private List <Entity> entities;
+	private ArrayList <Entity> entities;
 	private Object entity;
 	
 	public Client (Entity entity)
@@ -52,11 +51,14 @@ public class Client implements Runnable
 		}
 	}
 	
-	public List <Entity> update (Entity entity)
+	public ArrayList <Entity> getEntities ()
+	{
+		return this.entities;
+	}
+	
+	public void update (Entity entity)
 	{
 		this.entity = entity;
-		
-		return this.entities;
 	}
 	
 	@Override
@@ -101,7 +103,7 @@ public class Client implements Runnable
 				ObjectInputStream objectStreamGetFromServeur = new ObjectInputStream (new BufferedInputStream (objectByteGetFromServeur));
 				
 				this.entities.clear();
-				this.entities.addAll((List <Entity>) objectStreamGetFromServeur.readObject());
+				this.entities.addAll((ArrayList <Entity>) objectStreamGetFromServeur.readObject());
 				
 				objectStreamGetFromServeur.close();
 				paquetGetFromServeur.setLength(bufferGetFromServeur.length);
