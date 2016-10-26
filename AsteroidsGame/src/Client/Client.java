@@ -79,7 +79,7 @@ public class Client implements Runnable
 		
 		this.entity = entity;
 		
-		this.entityIsLocked = true;
+		this.entityIsLocked = false;
 	}
 	
 	@Override

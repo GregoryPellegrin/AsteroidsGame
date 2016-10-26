@@ -303,6 +303,7 @@ public class Game extends JFrame
 	{
 		this.entities.clear();
 		this.entities.addAll(this.client.getEntities());
+		this.client.addEntitiesTerminated();
 		
 		boolean find = false;
 		for (int i = 0; ((i < this.entities.size()) && (! find)); i++)
@@ -312,6 +313,9 @@ public class Game extends JFrame
 				
 				this.player = (Player) this.entities.get(i);
 			}
+		
+		if (this.entities.size() >= 1)
+			System.out.println("[GAME] Entities : " + this.entities.size());
 		
 		if (! find)
 			this.entities.add(this.player);
