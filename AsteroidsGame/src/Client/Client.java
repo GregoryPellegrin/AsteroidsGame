@@ -59,27 +59,38 @@ public class Client implements Runnable
 	
 	public ArrayList <Entity> getEntities ()
 	{
-		this.entitiesIsLocked = true;
+		if (! this.entitiesIsLocked)
+		{
+			this.entitiesIsLocked = true;
 		
-		return this.entities;
+			return this.entities;
+		}
+		else
+			return new ArrayList <> ();
 	}
 	
 	public void addEntitiesTerminated ()
 	{
-		this.entitiesIsLocked = true;
-		
-		this.entities.clear();
-		
-		this.entitiesIsLocked = false;
+		if (! this.entitiesIsLocked)
+		{
+			this.entitiesIsLocked = true;
+
+			this.entities.clear();
+
+			this.entitiesIsLocked = false;
+		}
 	}
 	
 	public void update (Entity entity)
 	{
-		this.entityIsLocked = true;
-		
-		this.entity = entity;
-		
-		this.entityIsLocked = false;
+		if (! this.entityIsLocked)
+		{
+			this.entityIsLocked = true;
+
+			this.entity = entity;
+
+			this.entityIsLocked = false;
+		}
 	}
 	
 	@Override
@@ -96,7 +107,9 @@ public class Client implements Runnable
 				
 				if (! this.entityIsLocked)
 				{
+					this.entityIsLocked = true;
 					objectStreamSendToServeur.writeObject(this.entity);
+					this.entityIsLocked = false;
 					objectStreamSendToServeur.flush();
 
 					byte [] bufferSendToServeur = objectByteSendToServeur.toByteArray();
@@ -128,8 +141,10 @@ public class Client implements Runnable
 				
 				if (! this.entitiesIsLocked)
 				{
+					this.entitiesIsLocked = true;
 					this.entities.clear();
 					this.entities.addAll((ArrayList <Entity>) objectStreamGetFromServeur.readObject());
+					this.entitiesIsLocked = false;
 				}
 				
 				objectStreamGetFromServeur.close();
