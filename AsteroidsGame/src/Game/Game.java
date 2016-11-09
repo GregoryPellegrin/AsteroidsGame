@@ -6,7 +6,6 @@
 /*
  * TODO
  * 
- * Serveur : Séparer le receive du send
  * Player : SuperSpeed, Flammes
  * Serveur : C'est lui qui donne l'id lorsque Client fait sa premiere requete
  * Menu : Doit afficher la disponibilité du Serveur
@@ -23,6 +22,7 @@
  * BUG
  * 
  * Vie des Ship = 4, apres 2 tir le vaisseau meurt
+ * Lors d'un retour vers le menu / Fermeture de Game
  */
 
 package Game;
@@ -313,9 +313,6 @@ public class Game extends JFrame
 				
 				this.player = (Player) this.entities.get(i);
 			}
-		
-		if (this.entities.size() >= 1)
-			System.out.println("[GAME] Entities : " + this.entities.size());
 		
 		if (! find)
 			this.entities.add(this.player);
